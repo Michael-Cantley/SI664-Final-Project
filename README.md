@@ -23,4 +23,4 @@ It is noted that this model is intended to fulfill the normal form requirements.
 TBD.
 
 ## Data Model
-![Video Game Sales](https://github.com/Michael-Cantley/SI664-Final-Project/blob/master/static/img/video-games-sales_logical_model.PNG)
+![Video Game Sales](https://github.com/Michael-Cantley/SI664-Final-Project/blob/master/static/img/complete_video_game_sales.PNG)
