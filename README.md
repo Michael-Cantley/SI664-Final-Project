@@ -6,7 +6,7 @@ The final-project app is used in SI 664, a University of Michigan, School of Inf
 Video Game Sales Final Project
 
 ## Purpose
-After the initial proposal and feedback, I have decided to build a Django app that reflects my interests in data pertaining to video games. My goals for this project are to structure the data regarding video game sales across regions, practice constructing tables that uphold the normal forms discussed in class, design a Django app with a clean user experience, and include an authentication pathway that allows users to log in and perform more/unique interactions within the Django app. 
+After the initial proposal and feedback, I have decided to build a Django app that reflects my interests in data pertaining to video games. My goals for this project are to structure the data regarding video game sales across regions, practice constructing tables that uphold the normal forms discussed in class, design a Django app with a clean user experience, and include an authentication pathway that allows users to log in and perform more/unique interactions within the Django app.
 
 ## Data Set
 The data set that will be used for this project can be found on Kaggle at the following link: (https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings). This data is a summary of video game sales across the world, primarily broken down into four regions of sales. The data includes video games from across platforms, genres of games, and years of release and allows users to view several attributes related to a given video game's sales.
@@ -21,3 +21,6 @@ It is noted that this model is intended to fulfill the normal form requirements.
 
 ## Package Dependencies
 TBD.
+
+## Data Model
+![Video Game Sales](https://github.com/Michael-Cantley/SI664-Final-Project/blob/master/static/img/video-games-sales_logical_model.PNG)
