@@ -12,6 +12,9 @@ After the initial proposal and feedback, I have decided to build a Django app th
 The data set that will be used for this project can be found on Kaggle at the following link: (https://www.kaggle.com/rush4ratio/video-game-sales-with-ratings). This data is a summary of video game sales across the world, primarily broken down into four regions of sales. The data includes video games from across platforms, genres of games, and years of release and allows users to view several attributes related to a given video game's sales.
 
 ## Data Model
+
+![Video Game Sales](https://github.com/Michael-Cantley/SI664-Final-Project/blob/master/static/img/complete_video_game_sales.PNG)
+
 The data model can be found under /static/img in this repository. Please look at and review this model to learn about the intended database structure.
 It is noted that this model is intended to fulfill the normal form requirements.
 
@@ -19,8 +22,6 @@ It is noted that this model is intended to fulfill the normal form requirements.
 
  Lastly, for the project requirements, I would do the M2M relationship by using the ‘game-sale-region’ setup and look to display the data by video game initially and then look to make a by region display, similar to the sites + countries displays in our heritage sites app. I would investigate/create more fields to make the region displays more informative. I am planning on including “total sales” and “most popular developer” as new fields for each region.
 
+
 ## Package Dependencies
 TBD.
-
-## Data Model
-![Video Game Sales](https://github.com/Michael-Cantley/SI664-Final-Project/blob/master/static/img/complete_video_game_sales.PNG)
