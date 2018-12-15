@@ -13,9 +13,39 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls import url
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.http import HttpResponseRedirect
+from django.urls import path, include
 
 urlpatterns = [
+    path('', lambda r: HttpResponseRedirect('video_games/')),
     path('admin/', admin.site.urls),
+    path('video_games/', include('video_games.urls')),
 ]
+
+# from django.conf import settings
+# from django.conf.urls import url
+# from django.conf.urls.static import static
+# from django.contrib import admin
+# from django.http import HttpResponseRedirect
+# from django.urls import path, include
+#
+#
+#
+# # Use static() to add url mapping to serve static files during development (only)
+#
+# urlpatterns = [
+#     url(r'^$', lambda r: HttpResponseRedirect('video_games/')),
+#     url(r'^admin/', admin.site.urls),
+#     url(r'^video_games/', include('video_games.urls')),
+# ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+#
+# # from django.contrib import admin
+# # from django.urls import path
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#
+# ]

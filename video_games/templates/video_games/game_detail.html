@@ -1,0 +1,109 @@
+{% extends 'video_games/base.html' %}
+
+{% block content %}
+
+<!-- safe filter on for raw HTML stored in database -->
+
+<h2>{{game.game_name | safe}}</h2>
+
+
+{% if game.platform %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Platform</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.platform | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.year_released %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Year Released</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.year_released | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.genre %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Genre</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.genre | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.publisher %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Publisher</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.publisher | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.critic_score %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Critic Score</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.critic_score | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.critic_count %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Critic Count</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.critic_count | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.user_score %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>User Score</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.user_score | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.user_count %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>User Count</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.user_count | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% if game.rating %}
+  <div class="row">
+    <div class="col-sm-2">
+      <p>Rating</p>
+    </div>
+    <div class="col-sm-10">
+      {{game.rating | safe}}
+    </div>
+  </div>
+{% endif %}
+
+{% endblock content %}}

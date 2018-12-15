@@ -25,7 +25,7 @@ SECRET_KEY = 'g@6t8v4@l6b57bht%15dw^oep80e9j-9jw$150%97((_*lyr7l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'video_games.apps.VideoGamesConfig',
+    'test_without_migrations',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,12 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'video_games',
+        'USER': 'mjcantle',
+        'OPTIONS': {
+            'read_default_file': 'C:\ProgramData\MySQL\MySQL Server 8.0\my.ini',
+        }
     }
 }
 
@@ -105,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -118,3 +124,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+# Add a custom test runner for converting unmanaged models to managed before
+# running a test and then revert the effect afterwards.
+
+TEST_RUNNER = 'video_games.utils.UnManagedModelTestRunner'
