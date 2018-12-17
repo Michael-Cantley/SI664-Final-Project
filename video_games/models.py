@@ -35,16 +35,17 @@ class Region(models.Model):
 # Added str function
 class Game(models.Model):
     game_id = models.AutoField(primary_key=True)
-    game_name = models.CharField(max_length=255, blank=True, null=True)
-    platform = models.ForeignKey('Platform', models.DO_NOTHING, blank=True, null=True)
+    # game_name = models.CharField(max_length=255, blank=True, null=True)
+    game_name = models.CharField(max_length=255)
+    platform = models.ForeignKey('Platform', on_delete=models.PROTECT, blank=True, null=True)
     year_released = models.IntegerField(blank=True, null=True)
-    genre = models.ForeignKey('Genre', models.DO_NOTHING, blank=True, null=True)
-    publisher = models.ForeignKey('Publisher', models.DO_NOTHING, blank=True, null=True)
+    genre = models.ForeignKey('Genre', on_delete=models.PROTECT, blank=True, null=True)
+    publisher = models.ForeignKey('Publisher', on_delete=models.PROTECT, blank=True, null=True)
     critic_score = models.IntegerField(blank=True, null=True)
     critic_count = models.IntegerField(blank=True, null=True)
     user_score = models.IntegerField(blank=True, null=True)
     user_count = models.IntegerField(blank=True, null=True)
-    rating = models.ForeignKey('Rating', models.DO_NOTHING, blank=True, null=True)
+    rating = models.ForeignKey('Rating', on_delete=models.PROTECT, blank=True, null=True)
 
     # Intermediate model (region -> sales <- game)
     region = models.ManyToManyField(Region, through='Sale')
@@ -106,9 +107,12 @@ class Game(models.Model):
 
 # Linking table b/w Game and Developer to handle the M2M relationship
 class GameDeveloper(models.Model):
+    '''
+    PK added to satisfy Django requirement. Mirror CONSTRAINT behavior in MySQL backend.
+    '''
     game_developer_id = models.AutoField(primary_key=True)
-    game = models.ForeignKey(Game, models.DO_NOTHING)
-    developer = models.ForeignKey(Developer, models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    developer = models.ForeignKey(Developer, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -166,8 +170,8 @@ class Rating(models.Model):
 #"Linking table" b/w Region and Game to handle the M2M relationship
 class Sale(models.Model):
     sale_id = models.AutoField(primary_key=True)
-    game = models.ForeignKey(Game, models.DO_NOTHING)
-    region = models.ForeignKey(Region, models.DO_NOTHING)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    region = models.ForeignKey(Region, on_delete=models.CASCADE)
     total_sales = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
 
     class Meta:
