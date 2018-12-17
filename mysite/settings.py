@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 from mysite import secrets
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = = secrets.SECRET_KEY
+SECRET_KEY = secrets.SECRET_KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = secrets.SOCIAL_AUTH_GOOGLE_OAUTH2_KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = secrets.SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'video_games.apps.VideoGamesConfig',
+    'crispy_forms',
     'social_django',
     'test_without_migrations',
 ]
@@ -157,3 +158,6 @@ LOGIN_URL = '/auth/login/google-oauth2/'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

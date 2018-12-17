@@ -2,13 +2,23 @@
 
 {% block content %}
 
-<article>
-  <header>
-    <h2>Video Game Over the Years</h2>
-  </header>
+<!-- <article> -->
+<header>
+  <div class="row">
+    <div class="col-sm-11">
+      <h2>Video Game Over the Years</h2>
+    </div>
+    <div class="col-sm-1">
+      {% if user.is_authenticated %}
+        <a class="btn btn-outline-success" href="{% url 'game_new' %}">New</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
 
+{% include 'video_games/pagination.html' %}
   <!-- WARNING: there is no missing code between <nav>...</nav> -->
-  <nav>
+  <!-- <nav>
     {% if is_paginated %}
       <ul class="pagination justify-content-center">
         {% if page_obj.has_previous %}
@@ -47,7 +57,7 @@
         {% endif %}
       </ul>
     {% endif %}
-  </nav>
+  </nav> -->
 
   {% if games %}
   <ul>

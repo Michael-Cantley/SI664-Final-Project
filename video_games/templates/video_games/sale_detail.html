@@ -1,0 +1,50 @@
+{% extends 'video_games/base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+
+    <h2>{{ sale.sale_id }}</h2>
+
+    <!-- TODO: special case Antarctica -->
+
+    {% if sale.sale_id %}
+
+    {% if sale.total_sales %}
+      <div class="row">
+        <div class="col-sm-2">
+          <p>Total Sales</p>
+        </div>
+        <div class="col-sm-10">
+          <p>{{ sale.total_sales }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if sale.game.game_name %}
+      <div class="row">
+        <div class="col-sm-2">
+          <p>Game Name</p>
+        </div>
+        <div class="col-sm-10">
+          <p>{{ sale.game.game_name }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if sale.region.region_name %}
+      <div class="row">
+        <div class="col-sm-2">
+          <p>Region</p>
+        </div>
+        <div class="col-sm-10">
+          <p>{{ sale.region.region_name }}</p>
+        </div>
+      </div>
+    {% endif %}
+
+    {% endif %}
+
+  {% else %}
+    <a href="{% url 'login' %}">Log in</a>
+  {% endif %}
+{% endblock content %}
