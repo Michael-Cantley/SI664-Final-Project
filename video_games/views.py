@@ -16,6 +16,9 @@ from django.urls import reverse_lazy
 from .models import Sale, GameDeveloper, Developer
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
+# Assignment 9
+from .filters import GameFilter
+from django_filters.views import FilterView
 
 
 def index(request):
@@ -187,3 +190,7 @@ class GameDeleteView(generic.DeleteView):
         self.object.delete()
 
         return HttpResponseRedirect(self.get_success_url())
+
+class GameFilterView(FilterView):
+    filterset_class = GameFilter
+    template_name = 'video_games/game_filter.html'

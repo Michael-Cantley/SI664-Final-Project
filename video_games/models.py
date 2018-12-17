@@ -76,6 +76,34 @@ class Game(models.Model):
         # return reverse('game_detail', args=[str(self.id)])
         return reverse('game_detail', kwargs={'pk': self.pk})
 
+    @property
+    def sales_values(self):
+        '''
+        Return list of the regions and their respective sales in Millions
+        for a given video game of interest.
+        '''
+        regions = self.region.order_by('region_name')
+        # sales = sale.objects.filterselect_related('game_id').order_by('total_sales')
+
+        names = []
+        for region in regions:
+            name = region.region_name
+            if name is None:
+                continue
+            if name not in names:
+                names.append(name)
+            # for sale in sales:
+            #     sold = sale.total_sales
+            #     if sold is None:
+            #         continue
+            #
+            # region_and_sold = ''.join([name, ' (', sold, ')'])
+            # if region_and_sold not in names:
+            #     names.append(region_and_sold)
+
+        return ', '.join(names)
+
+
 # Linking table b/w Game and Developer to handle the M2M relationship
 class GameDeveloper(models.Model):
     game_developer_id = models.AutoField(primary_key=True)

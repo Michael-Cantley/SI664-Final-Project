@@ -12,6 +12,8 @@ urlpatterns = [
     path('games/new/', views.GameCreateView.as_view(), name='game_new'),
     path('games/<int:pk>/delete/', views.GameDeleteView.as_view(), name='game_delete'),
     path('games/<int:pk>/update/', views.GameUpdateView.as_view(), name='game_update'),
+    # Assignment #9
+    path('games/search', views.GameFilterView.as_view(), name="search"),
 ]
 
 

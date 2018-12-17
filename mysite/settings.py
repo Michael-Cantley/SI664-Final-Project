@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'video_games.apps.VideoGamesConfig',
     'crispy_forms',
+    'django_filters',
     'social_django',
     'test_without_migrations',
 ]
