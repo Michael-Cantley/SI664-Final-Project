@@ -182,7 +182,7 @@ class GameSerializer(serializers.ModelSerializer):
 		This method persists a new Game instance and adds all related fields to the
 		GameDeveloper and Sales tables.
 		'''
-		print(validated_data)
+		#print(validated_data)
 
 		developers = validated_data.pop('game_developer')
 		regions = validated_data.pop('sale')
@@ -250,7 +250,7 @@ class GameSerializer(serializers.ModelSerializer):
 
 		# If any existing developers are not in updated list, delete them
 		new_dids = []
-		old_dids = GameDeveloper.objects.values_list(developer_id, flat=True).filter(game_id__exact=game_id)
+		old_dids = GameDeveloper.objects.values_list('developer_id', flat=True).filter(game_id__exact=game_id)
 
 		# Insert new unmatched developer entries
 		for developer in new_developers:
@@ -267,4 +267,26 @@ class GameSerializer(serializers.ModelSerializer):
 			else:
 				GameDeveloper.objects.filter(game_id=game_id, developer_id=old_did).delete()
 
+
+		# For Regions of an update
+		new_rids = []
+		old_rids = Sale.objects.values_list('region_id', flat=True).filter(region_id__exact=game_id)
+
+		# Insert new unmatched region entries
+		for region in new_regions:
+			new_rid = region.region_id
+			new_rids.append(new_rid)
+			if new_rid in old_rids:
+				continue
+			else:
+				Sale.objects.create(game_id=game_id, region_id=new_rid)
+
+		# Delete old unmatched region entries
+		for old_rid in old_rids:
+			if old_rid in new_rids:
+				continue
+			else:
+				Sale.objects.filter(game_id=game_id, region_id=old_rid).delete()
+
+		print(instance)
 		return instance

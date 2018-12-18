@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from video_games.models import Game, GameDeveloper
+from video_games.models import Game, GameDeveloper, Sale
 from api.serializers import GameSerializer
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
