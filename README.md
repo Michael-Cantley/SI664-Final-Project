@@ -3,7 +3,7 @@ The final-project app is used in SI 664, a University of Michigan, School of Inf
 
 
 # Project Name
-Video Game Sales Final Project 
+Video Game Sales Final Project
 
 ## Purpose
 After the initial proposal and feedback, I have decided to build a Django app that reflects my interests in data pertaining to video games. My goals for this project are to structure the data regarding video game sales across regions, practice constructing tables that uphold the normal forms discussed in class, design a Django app with a clean user experience, and include an authentication pathway that allows users to log in and perform more/unique interactions within the Django app.
@@ -24,4 +24,4 @@ It is noted that this model is intended to fulfill the normal form requirements.
 
 
 ## Package Dependencies
-TBD.
+TBD. (Utilized the requirements.txt file from class) along with similar pip installs.
