@@ -256,7 +256,7 @@ class GameSerializer(serializers.ModelSerializer):
 		for developer in new_developers:
 			new_did = developer.developer_id
 			new_dids.append(new_did)
-			if new_id in old_dids:
+			if new_did in old_dids:
 				continue
 			else:
 				GameDeveloper.objects.create(game_id=game_id, developer_id=new_did)

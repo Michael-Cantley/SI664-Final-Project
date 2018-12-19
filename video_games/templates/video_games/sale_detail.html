@@ -3,7 +3,7 @@
 {% block content %}
   {% if user.is_authenticated %}
 
-    <h2>{{ sale.sale_id }}</h2>
+    <h2>Sale ID #{{ sale.sale_id }}</h2>
 
     <!-- TODO: special case Antarctica -->
 
@@ -12,7 +12,7 @@
     {% if sale.total_sales %}
       <div class="row">
         <div class="col-sm-2">
-          <p>Total Sales</p>
+          <p>Millions of Units Sold</p>
         </div>
         <div class="col-sm-10">
           <p>{{ sale.total_sales }}</p>

@@ -15,7 +15,7 @@
         {% for sale in sales %}
           <div class="row">
             <div class="col-sm-5">
-              <p><a href="{% url 'sale_detail' sale.pk %}">{{ sale.sale_id }}</a></p>
+              <p><a href="{% url 'sale_detail' sale.pk %}">{{ sale.game.game_name }} --- {{sale.region.region_name}}</a></p>
             </div>
           </div>
         {% endfor %}
