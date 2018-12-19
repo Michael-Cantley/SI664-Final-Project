@@ -1,0 +1,40 @@
+{% extends 'video_games/base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated %}
+
+    <article>
+      <header>
+        <div class="row">
+          <div class="col-sm-11">
+            <h2>Developers and Products</h2>
+          </div>
+        <div class="col-sm-1">
+          {% if user.is_authenticated %}
+            <a class="btn btn-outline-success" href="{% url 'developer_new' %}">New</a>
+          {% endif %}
+        </div>
+      </header>
+
+    {% include 'video_games/pagination.html' %}
+
+
+      {% if developers %}
+        {% for developer in developers %}
+          <div class="row">
+            <div class="col-sm-5">
+              <p><a href="{% url 'developer_detail' developer.pk %}">{{developer.developer_name | safe}}</a></p>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p>No Developers are available to view.</p>
+      {% endif %}
+
+      <p>Count: {{ developers.count }}</p>
+    </article>
+
+  {% else %}
+    <a href="{% url 'login' %}">Log in</a>
+  {% endif %}
+{% endblock content %}}

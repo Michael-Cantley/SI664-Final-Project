@@ -2,18 +2,18 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
 
-from .models import Game, Sale
+from .models import Game, Sale, Developer, GameDeveloper
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 # Added for assignment #8
-from .forms import GameForm
+from .forms import GameForm, DeveloperForm
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.urls import reverse
 from django.urls import reverse_lazy
-from .models import Sale, GameDeveloper, Developer
+from .models import Sale, GameDeveloper, Developer, Region
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 # Assignment 9
@@ -194,3 +194,106 @@ class GameDeleteView(generic.DeleteView):
 class GameFilterView(FilterView):
     filterset_class = GameFilter
     template_name = 'video_games/game_filter.html'
+
+
+
+# For Extra Credit making CRUD for Developers
+class DeveloperListView(generic.ListView):
+    model = Developer
+    context_object_name = 'developers'
+    template_name = 'video_games/developers.html'
+    paginate_by = 100
+
+    def get_queryset(self):
+        return Developer.objects.all().order_by('developer_name')
+
+class DeveloperDetailView(generic.DetailView):
+	model = Developer
+	context_object_name = 'developer'
+	template_name = 'video_games/developer_detail.html'
+
+@method_decorator(login_required, name='dispatch')
+class DeveloperCreateView(generic.View):
+    model = Developer
+    form_class = DeveloperForm
+    success_message = "Developer created successfully"
+    template_name = 'video_games/developer_new.html'
+
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def post(self, request):
+        form = DeveloperForm(request.POST)
+        if form.is_valid():
+            developer = form.save(commit=False)
+            developer.save()
+            for game in form.cleaned_data['game']:
+                GameDeveloper.objects.create(developer=developer, game=game)
+            return redirect(developer)
+        return render(request, 'video_games/developer_new.html', {'form': form})
+
+    def get(self, request):
+        form = DeveloperForm()
+        return render(request, 'video_games/developer_new.html', {'form': form})
+
+@method_decorator(login_required, name='dispatch')
+class DeveloperUpdateView(generic.UpdateView):
+    model = Developer
+    form_class = DeveloperForm
+    context_object_name = 'developer'
+    success_message = "Developer Record Updated succesfully"
+    template_name = 'video_games/developer_update.html'
+
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        developer = form.save(commit=False)
+        developer.save()
+
+        old_gids = GameDeveloper.objects.values_list('game_id', flat=True).filter(developer_id=developer.developer_id)
+
+        # New games list
+        new_games = form.cleaned_data['game']
+
+        # New game ids (gids)
+        new_gids = []
+
+        # Insert new unmatched game entries
+        for game in new_games:
+            new_gid = game.game_id
+            new_gids.append(new_gid)
+            if new_gid in old_gids:
+                continue
+            else:
+                GameDeveloper.objects.create(developer=developer, game=game)
+
+        # Delete old unmatched game entries
+        for old_gid in old_gids:
+            if old_gid in new_gids:
+                continue
+            else:
+                GameDeveloper.objects.filter(developer_id=developer.developer_id, game_id=old_gid).delete()
+
+        return HttpResponseRedirect(developer.get_absolute_url())
+
+@method_decorator(login_required, name='dispatch')
+class DeveloperDeleteView(generic.DeleteView):
+    model = Developer
+    success_message = "Developer deleted succesfully"
+    success_url = reverse_lazy('developers')
+    context_object_name = 'developer'
+    template_name = 'video_games/developer_delete.html'
+
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        # Delete GameDeveloper entries
+        GameDeveloper.objects.filter(developer_id=self.object.developer_id).delete()
+
+        self.object.delete()
+
+        return HttpResponseRedirect(self.get_success_url())

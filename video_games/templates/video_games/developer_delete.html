@@ -1,0 +1,12 @@
+{% extends 'video_games/base.html' %}
+
+{% block content %}
+
+  <form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete the Developer Record for "{{ developer.developer_name }}"?</p>
+    <button type="submit" class="btn btn-outline-danger">delete</button>
+    <a class="btn btn-outline-secondary" href="{% url 'developer_detail' developer.pk %}">cancel</a>
+  </form>
+
+{% endblock content %}

@@ -199,7 +199,7 @@ class GameSerializer(serializers.ModelSerializer):
 				Sale.objects.create(
 							game_id=game.game_id,
 							region_id=region.region_id,
-							total_sales=0.00
+							total_sales=None
 				)
 		return game
 

@@ -14,6 +14,12 @@ urlpatterns = [
     path('games/<int:pk>/update/', views.GameUpdateView.as_view(), name='game_update'),
     # Assignment #9
     path('games/search', views.GameFilterView.as_view(), name="search"),
+    # Extra Credit
+    path('developers/', views.DeveloperListView.as_view(), name='developers'),
+    path('developers/<int:pk>/', views.DeveloperDetailView.as_view(), name='developer_detail'),
+    path('developers/new/', views.DeveloperCreateView.as_view(), name='developer_new'),
+    path('developers/<int:pk>/delete/', views.DeveloperDeleteView.as_view(), name='developer_delete'),
+    path('developers/<int:pk>/update/', views.DeveloperUpdateView.as_view(), name='developer_update'),
 ]
 
 

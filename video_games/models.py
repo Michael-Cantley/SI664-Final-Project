@@ -20,6 +20,10 @@ class Developer(models.Model):
     def __str__(self):
         return self.developer_name
 
+    def get_absolute_url(self):
+        # return reverse('game_detail', args=[str(self.id)])
+        return reverse('developer_detail', kwargs={'pk': self.pk})
+
 # Reference for Region
 class Region(models.Model):
     region_id = models.AutoField(primary_key=True)
@@ -177,6 +181,7 @@ class Sale(models.Model):
     class Meta:
         managed = False
         db_table = 'sale'
+
 
 
 class TempGame(models.Model):
