@@ -54,7 +54,7 @@ class Game(models.Model):
     # Intermediate model (region -> sales <- game)
     region = models.ManyToManyField(Region, through='Sale')
     # Intermediate model (developer > game_developer <- game)
-    developer = models.ManyToManyField(Developer, through='GameDeveloper')
+    developer = models.ManyToManyField(Developer, through='GameDeveloper', related_name='games')
 
     class Meta:
         managed = False

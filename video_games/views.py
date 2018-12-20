@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from .models import Game, Sale, Developer, GameDeveloper
 from django.contrib.auth.decorators import login_required
@@ -191,10 +192,27 @@ class GameDeleteView(generic.DeleteView):
 
         return HttpResponseRedirect(self.get_success_url())
 
-class GameFilterView(FilterView):
-    filterset_class = GameFilter
-    template_name = 'video_games/game_filter.html'
+class PaginatedFilterView(generic.View):
+    """
+    Creates a view mixin, which separates out default 'page' keyword and returns the
+    remaining querystring as a new template context variable.
+    https://stackoverflow.com/questions/51389848/how-can-i-use-pagination-with-django-filter
+    """
+    def get_context_data(self, **kwargs):
+        context = super(PaginatedFilterView, self).get_context_data(**kwargs)
+        if self.request.GET:
+            querystring = self.request.GET.copy()
+            if self.request.GET.get('page'):
+                del querystring['page']
+            context['querystring'] = querystring.urlencode()
+        return context
 
+class GameFilterView(PaginatedFilterView, FilterView):
+    model = Game
+    filterset_class = GameFilter
+    context_object_name = 'game_list'
+    template_name = 'video_games/game_filter.html'
+    paginate_by = 30
 
 
 # For Extra Credit making CRUD for Developers
@@ -227,8 +245,9 @@ class DeveloperCreateView(generic.View):
         if form.is_valid():
             developer = form.save(commit=False)
             developer.save()
-            for game in form.cleaned_data['game']:
-                GameDeveloper.objects.create(developer=developer, game=game)
+            Developer.objects.create(developer=developer)
+            # for game in form.cleaned_data['game']:
+            #     GameDeveloper.objects.create(developer=developer, game=game)
             return redirect(developer)
         return render(request, 'video_games/developer_new.html', {'form': form})
 
@@ -250,6 +269,15 @@ class DeveloperUpdateView(generic.UpdateView):
     def form_valid(self, form):
         developer = form.save(commit=False)
         developer.save()
+        old_devids = Developer.objects.filter(developer_id=developer.developer_id)
+
+        # New developers list
+        new_devs = form.cleaned_data['developer']
+
+        new_devids = []
+
+
+
 
         old_gids = GameDeveloper.objects.values_list('game_id', flat=True).filter(developer_id=developer.developer_id)
 

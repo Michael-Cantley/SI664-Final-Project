@@ -1,10 +1,27 @@
 {% extends 'video_games/base.html' %}
 
+{% load video_games_extras %}
+{{ game.game_id }}
+
 {% block content %}
   {% if user.is_authenticated %}
-
-    <h2>Developer #{{ developer.developer_name }}</h2>
-
+    <header>
+      <div class="row">
+        <div class="col-sm-10">
+          <h2>Developer {{ developer.developer_name }}</h2>
+        </div>
+        <div class="col-xs-1">
+          {% if user.is_authenticated %}
+            <a class="btn btn-outline-warning" href="{% url 'developer_update' developer.pk %}">Edit</a>
+          {% endif %}
+        </div>
+        <div class="col-xs-1">
+          {% if user.is_authenticated %}
+            &nbsp;<a class="btn btn-outline-danger" href="{% url 'developer_delete' developer.pk %}">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </<header>
 
     {% if developer.developer_id %}
 
@@ -28,6 +45,30 @@
           <p>{{ developer.developer_id }}</p>
         </div>
       </div>
+    {% endif %}
+
+    {% if developer.games.all %}
+    <div class="row">
+      <div class="col-sm-2">
+        <p>Developer games</p>
+      </div>
+      <div class="col-sm-10">
+        {% spaceless %}
+        <p>
+          {% for game in developer.games.all %}
+            {% if forloop.last %}
+              {{ game.game_name.strip }}
+            {% else %}
+              {{ game.game_name.strip|add_trailing_comma }}
+            {% endif %}
+          {% endfor %}
+        </p>
+        {% endspaceless %}
+      </div>
+      <!-- <div class="col-sm-10">
+        <p>{{ developer.game_name }}</p>
+      </div> -->
+    </div>
     {% endif %}
 
     {% endif %}
