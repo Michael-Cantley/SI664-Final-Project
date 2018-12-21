@@ -238,13 +238,16 @@ class GameSerializer(serializers.ModelSerializer):
 				instance.platform_id
 		)
 		instance.genre_id = validated_data.get(
-				'genre_id'
+				'genre_id',
+				instance.genre_id
 		)
 		instance.publisher_id = validated_data.get(
-				'publisher_id'
+				'publisher_id',
+				instance.publisher_id
 		)
 		instance.rating_id = validated_data.get(
-				'rating_id'
+				'rating_id',
+				instance.rating_id
 		)
 		instance.save()
 
