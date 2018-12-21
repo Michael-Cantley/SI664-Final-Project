@@ -108,7 +108,7 @@ class Game(models.Model):
         for a given video game of interest.
         '''
         regions = self.region.order_by('region_name')
-        # sales = sale.objects.filterselect_related('game_id').order_by('total_sales')
+        # sales = sale.objects.filterselect_related('game_id').order_by('total_sales') 
 
         names = []
         for region in regions:
