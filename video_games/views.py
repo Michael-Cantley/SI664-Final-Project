@@ -154,7 +154,7 @@ class GameUpdateView(generic.UpdateView):
             if new_sid in old_sids:
                 continue
             else:
-                Sale.objects.create(game=game, region=region, total_sales=0.00)
+                Sale.objects.create(game=game, region=region, total_sales=None)
 
         #Delete old unmatched region entries
         for old_sid in old_sids:
@@ -163,10 +163,9 @@ class GameUpdateView(generic.UpdateView):
             else:
                 Sale.objects.filter(game_id=game.game_id, region_id=old_sid).delete()
 
-
-
         return HttpResponseRedirect(game.get_absolute_url())
         #return redirect('heritagesites/site_detail', pk=site.pk)
+
 
 @method_decorator(login_required, name='dispatch')
 class GameDeleteView(generic.DeleteView):
@@ -243,12 +242,19 @@ class DeveloperCreateView(generic.View):
     def post(self, request):
         form = DeveloperForm(request.POST)
         if form.is_valid():
-            developer = form.save(commit=False)
-            developer.save()
-            Developer.objects.create(developer=developer)
-            # for game in form.cleaned_data['game']:
-            #     GameDeveloper.objects.create(developer=developer, game=game)
-            return redirect(developer)
+            developer = form.cleaned_data['developer_name']
+            Developer.objects.create(developer_name=developer)
+            my_dev = Developer.objects.get(developer_name=developer)
+            # developer = form.save(commit=False)
+            # developer.save()
+            # See if developer_name already exists if not make a new instance
+            # try:
+            #     Developer.objects.get(developer_name=developer)
+            # except:
+            #     Developer.objects.create(developer=developer)
+            for game in form.cleaned_data['games']:
+                GameDeveloper.objects.create(developer=my_dev, game=game)
+            return redirect(my_dev)
         return render(request, 'video_games/developer_new.html', {'form': form})
 
     def get(self, request):
@@ -269,22 +275,16 @@ class DeveloperUpdateView(generic.UpdateView):
     def form_valid(self, form):
         developer = form.save(commit=False)
         developer.save()
-        old_devids = Developer.objects.filter(developer_id=developer.developer_id)
 
-        # New developers list
-        new_devs = form.cleaned_data['developer']
-
-        new_devids = []
-
-
-
-
+        # Current game_id values linked to developer
         old_gids = GameDeveloper.objects.values_list('game_id', flat=True).filter(developer_id=developer.developer_id)
 
-        # New games list
-        new_games = form.cleaned_data['game']
+        # New Games list
+        new_games = form.cleaned_data['games']
 
-        # New game ids (gids)
+        # TODO Can these loops be refactored?
+
+        # New game ids (new_gids)
         new_gids = []
 
         # Insert new unmatched game entries
@@ -304,6 +304,7 @@ class DeveloperUpdateView(generic.UpdateView):
                 GameDeveloper.objects.filter(developer_id=developer.developer_id, game_id=old_gid).delete()
 
         return HttpResponseRedirect(developer.get_absolute_url())
+
 
 @method_decorator(login_required, name='dispatch')
 class DeveloperDeleteView(generic.DeleteView):

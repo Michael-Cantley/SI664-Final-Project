@@ -30,7 +30,7 @@ urlpatterns = [
     path('video_games/', include('video_games.urls')),
     path('video_games/api/rest-auth/', include('rest_auth.urls')),
     path('video_games/api/rest-auth/registration/', include('rest_auth.registration.urls')),
-    path('api-auth/', include('api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('video_games/api/', include('api.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # from django.conf import settings

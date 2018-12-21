@@ -290,3 +290,79 @@ class GameSerializer(serializers.ModelSerializer):
 
 		print(instance)
 		return instance
+
+# For EC3--- New API CRUD
+class DeveloperUpSerializer(serializers.ModelSerializer):
+	developer_name = serializers.CharField(
+			allow_blank=False,
+			max_length=100
+	)
+	game_developer = GameDeveloperSerializer(
+		source='game_developer_set',
+		many=True,
+		read_only=True
+	)
+	game_ids = serializers.PrimaryKeyRelatedField(
+		many=True,
+		write_only=True,
+		queryset=Game.objects.all(),
+		source='game_developer'
+	)
+
+	class Meta:
+		model = Developer
+		fields = (
+				'developer_id',
+				'developer_name',
+				'game_developer',
+				'game_ids'
+		)
+
+	def create(self, validated_data):
+		'''
+		This method persists a new Developer instance as well as as adds all related
+		games to GameDeveloper table.
+		'''
+
+		games = validated_data.pop('game_developer')
+		developer = Developer.objects.create(**validated_data)
+
+		if games is not None:
+			for game in games:
+				GameDeveloper.objects.create(game_id=game.game_id, developer_id=developer.developer_id)
+		return developer
+
+	def update(self, instance, validated_data):
+		developer_id = instance.developer_id
+		new_games = validated_data.pop('game_developer')
+
+		# Generate instances for EC
+		instance.developer_name = validated_data.get(
+				'developer_name',
+				instance.developer_name
+		)
+		instance.save()
+
+		# If any existing games are not in updated list delete theme
+		new_gids = []
+		old_gids = GameDeveloper.objects.values_list('game_id', flat=True).filter(developer_id__exact=developer_id)
+
+		# Insert may not be required (Just return instance)
+
+		# Insert new unmatched country entries
+		for game in new_games:
+			new_gid = game.game_id
+			new_gids.append(new_gid)
+			if new_gid in old_gids:
+				continue
+			else:
+				GameDeveloper.objects.create(developer_id=developer_id, game_id=new_gid)
+
+		# Delete old unmatched game entries
+		for old_gid in old_gids:
+			if old_gid in new_gids:
+				continue
+			else:
+				GameDeveloper.objects.filter(developer_id=developer_id, game_id=old_gid).delete()
+
+		return instance

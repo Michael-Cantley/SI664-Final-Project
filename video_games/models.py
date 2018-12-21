@@ -24,6 +24,26 @@ class Developer(models.Model):
         # return reverse('game_detail', args=[str(self.id)])
         return reverse('developer_detail', kwargs={'pk': self.pk})
 
+    @property
+    def game_names(self):
+        '''
+        Return list of the regions and their respective sales in Millions
+        for a given video game of interest.
+        '''
+        games = self.games.all().order_by('game_name')
+        # sales = sale.objects.filterselect_related('game_id').order_by('total_sales')
+
+        names = []
+        for game in games:
+            name = game.game_name
+            if name is None:
+                continue
+            if name not in names:
+                names.append(name)
+
+        return ', '.join(names)
+
+
 # Reference for Region
 class Region(models.Model):
     region_id = models.AutoField(primary_key=True)
@@ -97,14 +117,6 @@ class Game(models.Model):
                 continue
             if name not in names:
                 names.append(name)
-            # for sale in sales:
-            #     sold = sale.total_sales
-            #     if sold is None:
-            #         continue
-            #
-            # region_and_sold = ''.join([name, ' (', sold, ')'])
-            # if region_and_sold not in names:
-            #     names.append(region_and_sold)
 
         return ', '.join(names)
 

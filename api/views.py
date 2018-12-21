@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from video_games.models import Game, GameDeveloper, Sale
-from api.serializers import GameSerializer
+from video_games.models import Game, GameDeveloper, Sale, Developer
+from api.serializers import GameSerializer, DeveloperUpSerializer
 from rest_framework import generics, permissions, status, viewsets
 from rest_framework.response import Response
 
@@ -22,9 +22,27 @@ class GameViewSet(viewsets.ModelViewSet):
 	def perform_destroy(self, instance):
 		instance.delete()
 
+class DeveloperViewSet(viewsets.ModelViewSet):
+    '''
+    This ViewSet provides both 'list' and 'detail' views.
+    '''
+    queryset = Developer.objects.order_by('developer_name')
+    serializer_class = DeveloperUpSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def delete(self, request, pk, format=None):
+        developer = self.get_object(pk)
+        self.perform_destroy(self, developer)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.delete()
+
+
 
 '''
-class SiteListAPIView(generics.ListCreateAPIView):
+class SiteListAPIView(generics.ListCreateAPIView): 
 	queryset = HeritageSite.objects.select_related('heritage_site_category').order_by('site_name')
 	serializer_class = HeritageSiteSerializer
 	permission_classes = (permissions.DjangoModelPermissionsOrAnonReadOnly,)

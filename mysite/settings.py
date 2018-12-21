@@ -204,7 +204,7 @@ REST_FRAMEWORK = {
 # The value 'null' can also appear in this list, and will match the Origin: null header
 # that is used in “privacy-sensitive contexts”, such as when the client is running from
 # a file:// domain. Defaults to [].
-# Port 3000 is the default port for React apps.
+# Port 3000 is the default port for React apps. 
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:3000/'
 )

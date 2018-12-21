@@ -2,10 +2,11 @@ from django.urls import include, path
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import SimpleRouter
 from rest_framework_swagger.views import get_swagger_view
-from api.views import GameViewSet
+from api.views import GameViewSet, DeveloperViewSet
+from rest_framework import routers
 
 API_TITLE = 'video_games API'
-API_DESC = 'A web API for creating, modifying and deleting Video Games.'
+API_DESC = 'A web API for creating, modifying and deleting Video Games and/or Game Developers.'
 
 docs_view = include_docs_urls(
 	title=API_TITLE,
@@ -23,8 +24,10 @@ schema_view = get_schema_view(
 )
 '''
 
-router = SimpleRouter()
+router = routers.SimpleRouter()
 router.register(r'games', GameViewSet, base_name='games')
+# router2 = SimpleRouter()
+router.register('developers', DeveloperViewSet, base_name='developers')
 # urlpatterns = router.urls
 
 # The API URLs are now determined automatically by the router.
@@ -34,6 +37,8 @@ urlpatterns = [
 	path('swagger-docs/', schema_view)
 	# path('schema/', schema_view)
 ]
+
+#urlpatterns += router.urls
 
 '''
 urlpatterns = [
