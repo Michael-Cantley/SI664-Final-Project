@@ -6,7 +6,7 @@
     {% csrf_token %}
     <p>Are you sure you want to delete the Video Game "{{ game.game_name }}"?</p>
     <button type="submit" class="btn btn-outline-danger">delete</button>
-    <a class="btn btn-outline-secondary" href="{% url 'game_detail' game.pk %}">cancel</a>
+    <a class="btn btn-outline-secondary" href="{% url 'game_detail' game.pk %}">Cancel</a>
   </form>
 
 {% endblock content %}
